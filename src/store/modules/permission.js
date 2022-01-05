@@ -83,7 +83,6 @@ const permission = {
           break
       }
     },
-    // 重置路由
     [RESETROUTER]: (state) => {
       state.addRouters = []
       state.routers = []

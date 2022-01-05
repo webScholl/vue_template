@@ -1,78 +1,81 @@
-// 异步设置app版本号
-
 import {
+  login,
   getUserInfo,
-  login
+  getAccesstoken
 } from '@/apis/login'
 import {
   setLocalStore,
   getLocalStore
 } from '@/utils/localStoreUtils'
 import { resetRouter } from '@/router'
-import { RESETROUTER } from './permission'
-export const SET_USERINFO_MUTATION = 'SET_USERINFO_MUTATION' // 设置app版本号
-export const SET_USERINFO_ACTION = 'SET_USERINFO_ACTION' // 用户信息
-export const SET_ACCESSTOKEN = 'SET_ACCESSTOKEN' // token
-export const SET_ROLES = 'SET_ROLES' // roles
-export const LOGOUT = 'LOGOUT' // 退出
-export const LOGIN = 'LOGIN' // 登录
+
+import * as types from '../action-types'
+
 export default {
   // namespaced: true,
   state: {
-    accessToken: getLocalStore('ACCESSTOKEN') || '', // 令牌
-    roles: [], // 权限
-    userInfo: JSON.parse(getLocalStore('USERINFO')) || {} // 路由
+    accessToken: getLocalStore('ACCESSTOKEN') || null, // 访问令牌
+    refreshToken: getLocalStore('REFRESHTOKEN') || null, // 替换令牌
+    userInfo: JSON.parse(getLocalStore('USERINFO')) || {} // 用户信息
   },
   mutations: {
-    [SET_USERINFO_MUTATION]: (state, payload) => {
-      state.userInfo = payload
-      setLocalStore('USERINFO', JSON.stringify(payload))
-    },
-    [SET_ACCESSTOKEN]: (state, payload) => {
+    [types.SET_ACCESSTOKEN]: (state, payload) => {
       state.accessToken = payload
-      setLocalStore('ACCESSTOKEN', payload)
+      setLocalStore(types.ACCESSTOKEN, payload)
     },
-    [SET_ROLES]: (state, payload) => {
-      state.roles = payload
-      setLocalStore('ROLES', JSON.stringify(payload))
+    [types.SET_REFRESHTOKEN]: (state, payload) => {
+      state.refreshToken = payload
+      setLocalStore(types.REFRESHTOKEN, payload)
+    },
+    [types.SET_USERINFO]: (state, payload) => {
+      state.userInfo = payload
+      setLocalStore(types.USERINFO, payload)
     }
   },
   actions: {
-    [SET_USERINFO_ACTION]: ({
+    [types.LOGIN]: ({ commit }, options) => {
+      return new Promise((resolve, reject) => {
+        login(options).then(res => {
+          commit(types.SET_ACCESSTOKEN, res.accessToken)
+          commit(types.SET_REFRESHTOKEN, res.refreshToken)
+          resolve()
+        })
+      })
+    },
+    [types.SET_USERINFO]: ({
       commit
     }) => {
       return new Promise((resolve, reject) => {
         getUserInfo().then(
           res => {
-            commit(SET_USERINFO_MUTATION, res)
-            commit(SET_ROLES, res.roles)
+            commit(types.SET_USERINFO, res)
             resolve(res)
           }
         )
       })
     },
-    // 登录
-    [LOGIN]: ({ commit }, options) => {
-      return new Promise((resolve, reject) => {
-        login(options).then(res => {
-          commit(SET_ACCESSTOKEN, res.accessToken)
-          resolve()
-        })
-      })
-    },
-    // 退出
-    [LOGOUT]: ({
-      commit,
-      rootState
+    [types.LOGOUT]: ({
+      commit
     }) => {
       return new Promise((resolve, reject) => {
-        commit(SET_USERINFO_MUTATION, '')
-        commit(SET_ACCESSTOKEN, '')
-        commit(SET_ROLES, [])
+        commit(types.SET_ACCESSTOKEN, null)
+        commit(types.SET_REFRESHTOKEN, null)
+        commit(types.SET_USERINFO, {})
         // 重置路由
         resetRouter()
-        commit(RESETROUTER)
+        commit(types.RESETROUTER)
         resolve()
+      })
+    },
+    [types.REFRESH_TOKEN]: ({ commit }) => {
+      return new Promise((resolve, reject) => {
+        getAccesstoken().then(
+          res => {
+            commit(types.SET_ACCESSTOKEN, res.accessToken)
+            commit(types.SET_REFRESHTOKEN, res.refreshToken)
+            resolve(res)
+          }
+        )
       })
     }
   }

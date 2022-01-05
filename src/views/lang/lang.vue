@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { SET_LANG } from '@/store/modules/app'
+import * as types from '../../store/action-types'
 import { vantLocales } from '@/i18n'
 import commonMixin from '@/utils/mixin'
 export default {
@@ -33,7 +33,7 @@ export default {
   methods: {
     // 切换语言
     changeLang(lang) {
-      this.$store.commit(SET_LANG, {
+      this.$store.commit(types.SET_LANG, {
         lang
       })
       this.radio = lang

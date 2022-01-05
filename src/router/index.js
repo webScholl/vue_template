@@ -5,6 +5,7 @@ import pageRoutes from './pageRoutes'
 import store from '@/store'
 import { SET_KEEPALIVELIST, KeepAliveStatus } from '@/store/modules/permission'
 import config from '~/app.config'
+import hooks from './hooks'
 
 // 复写warn方法方便检查由于使用name跳转无法监控404的问题
 const sourceWarn = window.console.warn
@@ -94,4 +95,8 @@ export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher
 }
+
+Object.keys(hooks).forEach(hook => {
+  router.beforeEach(hooks[hook])
+})
 export default router

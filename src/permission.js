@@ -3,7 +3,7 @@ import store from './store'
 import NProgress from 'nprogress'
 import config from '~/app.config' // 路由白名单路径集
 import { GENERATE_ROUTES, SET_KEEPALIVELIST, KeepAliveStatus } from '@/store/modules/permission'
-import { SET_USERINFO_ACTION, LOGOUT } from '@/store/modules/user'
+import { SET_USERINFO, LOGOUT } from '@/store/modules/user'
 import 'nprogress/nprogress.css' // nprogress 进度条
 import { Toast } from 'vant'
 const { isOpenAsyncRoutes, routerWhiteLists, isNprogress } = config// 进度条样式
@@ -41,13 +41,13 @@ router.beforeEach(async(to, from, next) => {
         try {
           // 判断是否开启动态路由
           if (!isOpenAsyncRoutes) {
-            await store.dispatch(SET_USERINFO_ACTION)
+            await store.dispatch(SET_USERINFO)
             return next({ ...to })
           }
           // 动态路由加载过了 直接返回
           if (isGetAsyncRoutes) return next()
           // 获取用户数据
-          await store.dispatch(SET_USERINFO_ACTION)
+          await store.dispatch(SET_USERINFO)
           // 获取动态路由 api
           if (isOpenAsyncRoutes) {
             // debugger

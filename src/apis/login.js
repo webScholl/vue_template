@@ -1,5 +1,4 @@
 import { getLocalStore } from '@/utils'
-// admin 登录
 export function login({ roleId }) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -9,8 +8,6 @@ export function login({ roleId }) {
     }, 1000)
   })
 }
-
-// admin 登录
 export function getUserInfo() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -23,3 +20,14 @@ export function getUserInfo() {
     }, 200)
   })
 }
+export function getAccesstoken() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({
+        accessToken: `accessToken`,
+        refreshToken: `refreshToken`
+      })
+    }, 1000)
+  })
+}
+

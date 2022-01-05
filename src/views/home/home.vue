@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { getJson } from '@/apis'
+import { getAppVersion } from '@/apis'
 import commonMixin from '@/utils/mixin'
 import Test from 'Test'
 import lineChart from 'lineChart'
@@ -34,7 +34,9 @@ export default {
     calendar,
     lineChart
   },
-  mounted() {},
+  mounted() {
+    getAppVersion()
+  },
   onShow() {
     console.log(this, 'onShow')
   },

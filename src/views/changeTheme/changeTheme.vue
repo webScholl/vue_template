@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import { SET_THEME } from '@/store/modules/app'
+import * as types from '../../store/action-types'
+
 import commonMixin from '@/utils/mixin'
 export default {
   name: 'changeTheme',
@@ -20,7 +21,7 @@ export default {
   },
   methods: {
     changeTheme(theme) {
-      this.$store.dispatch(SET_THEME, theme).then((res) => {
+      this.$store.dispatch(types.SET_THEME, theme).then((res) => {
         this.$toast.success(res)
       })
     }
