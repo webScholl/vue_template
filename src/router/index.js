@@ -97,6 +97,6 @@ export function resetRouter() {
 }
 
 Object.keys(hooks).forEach(hook => {
-  router.beforeEach(hooks[hook])
+  router.beforeEach(hooks[hook].bind(router))
 })
 export default router

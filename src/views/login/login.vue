@@ -2,7 +2,6 @@
   <div class="login">
     <header>
       <h3>使用手机号登录</h3>
-      <h4 @click="changeRole">{{ role === 1 ? '管理员登入' : '员工登入' }}</h4>
     </header>
     <section>
       <van-cell-group inset>
@@ -27,12 +26,11 @@
       <router-link :to="{ path: '/' }">忘记密码</router-link>
       <router-link :to="{ path: '/page/jtRegister' }">注册</router-link>
     </footer>
-    <!-- <van-popup v-model="show"></van-popup> -->
   </div>
 </template>
 
 <script>
-import { LOGIN } from '@/store/modules/user'
+import { LOGIN } from '@/store/action-types'
 import commonMixin from '@/utils/mixin'
 export default {
   name: 'login',
@@ -40,30 +38,15 @@ export default {
   data() {
     return {
       phone: '',
-      password: '',
-      role: 1 // 1 admin 2 em
+      password: ''
     }
   },
   methods: {
-    changeRole() {
-      if (this.role === 1) {
-        this.role = 2
-      } else {
-        this.role = 1
-      }
-    },
     onSubmit(val) {
-      this.$toast.loading({
-        duration: 0, // 持续展示 toast
-        forbidClick: true,
-        message: '登录中'
-      })
-      // 登录
       this.$store
         .dispatch(LOGIN, {
           phone: escape(this.phone),
-          password: escape(this.password),
-          roleId: this.role
+          password: escape(this.password)
         })
         .then((res) => {
           const backPath = this.$route.query.redirect || '/layout/home'

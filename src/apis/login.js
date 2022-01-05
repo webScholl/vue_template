@@ -1,4 +1,3 @@
-import { getLocalStore } from '@/utils'
 export function login({ roleId }) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -12,9 +11,7 @@ export function getUserInfo() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const userInfo = {
-        username: 'zhangsan',
-        age: 18,
-        roles: getLocalStore('accessToken').includes('1') ? ['admin'] : ['employee']
+        username: 'zhangsan'
       }
       resolve(userInfo)
     }, 200)

@@ -3,7 +3,7 @@ import store from './store'
 import NProgress from 'nprogress'
 import config from '~/app.config' // 路由白名单路径集
 import { GENERATE_ROUTES, SET_KEEPALIVELIST, KeepAliveStatus } from '@/store/modules/permission'
-import { SET_USERINFO, LOGOUT } from '@/store/modules/user'
+import { SET_USERINFO, LOGOUT } from '@/store/action-types'
 import 'nprogress/nprogress.css' // nprogress 进度条
 import { Toast } from 'vant'
 const { isOpenAsyncRoutes, routerWhiteLists, isNprogress } = config// 进度条样式
