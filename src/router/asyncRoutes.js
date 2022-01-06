@@ -4,7 +4,9 @@ const asyncRoutes = [{
   component: Page,
   meta: {
     title: 'page',
-    keepAlive: true
+    keepAlive: true,
+    auth: 'page',
+    needLogin: true
   },
   children: [
     {
@@ -13,7 +15,8 @@ const asyncRoutes = [{
       meta: {
         title: '页面',
         keepAlive: true,
-        auth: ['admin', 'employee']
+        auth: 'page.asyncRouteExample',
+        needLogin: true
       },
       component: () => import('@/views/asyncRouteExample/asyncRouteExample')
     },
@@ -23,7 +26,8 @@ const asyncRoutes = [{
       meta: {
         title: '页面',
         keepAlive: true,
-        auth: ['admin']
+        auth: 'page.asyncRouteExample1',
+        needLogin: true
       },
       component: () => import('@/views/asyncRouteExample1/asyncRouteExample1')
     }
@@ -35,7 +39,8 @@ const asyncRoutes = [{
   name: '404',
   meta: {
     title: '404',
-    keepAlive: true
+    keepAlive: true,
+    needLogin: true
   },
   component: () =>
     import(/* webpackChunkName: "404" */ '../views/404/404.vue')

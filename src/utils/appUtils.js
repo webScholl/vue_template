@@ -31,3 +31,11 @@ export function changeTheme(themeValue) {
   setAttr(getHtmlDom(), 'class', `theme-${themeValue}`)
   return themeValue
 }
+
+/**
+ * 设置title
+ */
+export function setTitle(to) {
+  // 一般 网站title  'xxx-网站名'
+  document.title = `${to.meta.title}-${location.host}`
+}

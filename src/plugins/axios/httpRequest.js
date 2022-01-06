@@ -20,7 +20,7 @@ class HttpRequest {
       // 配置CancelToken并存储下来用于取消请求
       const CancelToken = axios.CancelToken
       config.cancelToken = new CancelToken(fn => {
-        store.commit(types.SET_CANCEL_TOKENS, fn)
+        store.commit(types.SET_CANCELTOKENS, fn)
       })
       return config
     }, error => {

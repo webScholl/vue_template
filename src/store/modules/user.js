@@ -1,7 +1,7 @@
 import {
   login,
   getUserInfo,
-  getAccesstoken
+  updateToken
 } from '@/apis/login'
 import {
   setLocalStore,
@@ -9,7 +9,7 @@ import {
 } from '@/utils/localStoreUtils'
 import { resetRouter } from '@/router'
 
-import * as types from '../action-types'
+import { LOGIN, SET_TOKEN, UPDATE_TOKEN, SET_USERINFO, LOGOUT, RESETROUTER } from '../action-types'
 
 export default {
   // namespaced: true,
@@ -19,60 +19,54 @@ export default {
     userInfo: JSON.parse(getLocalStore('USERINFO')) || {} // 用户信息
   },
   mutations: {
-    [types.SET_ACCESSTOKEN]: (state, payload) => {
-      state.accessToken = payload
-      setLocalStore(types.ACCESSTOKEN, payload)
+    [SET_TOKEN]: (state, payload) => {
+      state.accessToken = payload.accessToken
+      state.refreshToken = payload.refreshToken
+      setLocalStore('ACCESSTOKEN', payload.accessToken)
+      setLocalStore('REFRESHTOKEN', payload.refreshToken)
     },
-    [types.SET_REFRESHTOKEN]: (state, payload) => {
-      state.refreshToken = payload
-      setLocalStore(types.REFRESHTOKEN, payload)
-    },
-    [types.SET_USERINFO]: (state, payload) => {
+    [SET_USERINFO]: (state, payload) => {
       state.userInfo = payload
-      setLocalStore(types.USERINFO, payload)
+      setLocalStore('USERINFO', payload)
     }
   },
   actions: {
-    [types.LOGIN]: ({ commit }, options) => {
-      return new Promise((resolve, reject) => {
-        login(options).then(res => {
-          commit(types.SET_ACCESSTOKEN, res.accessToken)
-          commit(types.SET_REFRESHTOKEN, res.refreshToken)
+    [LOGIN]: ({ commit }, payLoad) => {
+      return new Promise((resolve) => {
+        login(payLoad).then(res => {
+          commit(SET_TOKEN, res)
           resolve()
         })
       })
     },
-    [types.SET_USERINFO]: ({
+    [SET_USERINFO]: ({
       commit
     }) => {
-      return new Promise((resolve, reject) => {
+      return new Promise(() => {
         getUserInfo().then(
           res => {
-            commit(types.SET_USERINFO, res)
-            resolve(res)
+            commit(SET_USERINFO, res)
           }
         )
       })
     },
-    [types.LOGOUT]: ({
+    [LOGOUT]: ({
       commit
     }) => {
       return new Promise((resolve, reject) => {
-        commit(types.SET_ACCESSTOKEN, null)
-        commit(types.SET_REFRESHTOKEN, null)
-        commit(types.SET_USERINFO, {})
+        commit(SET_TOKEN, { accessToken: null, refreshToken: null })
+        commit(SET_USERINFO, {})
         // 重置路由
         resetRouter()
-        commit(types.RESETROUTER)
+        commit(RESETROUTER)
         resolve()
       })
     },
-    [types.REFRESH_TOKEN]: ({ commit }) => {
+    [UPDATE_TOKEN]: ({ commit }) => {
       return new Promise((resolve, reject) => {
-        getAccesstoken().then(
+        updateToken().then(
           res => {
-            commit(types.SET_ACCESSTOKEN, res.accessToken)
-            commit(types.SET_REFRESHTOKEN, res.refreshToken)
+            commit(SET_TOKEN, res)
             resolve(res)
           }
         )

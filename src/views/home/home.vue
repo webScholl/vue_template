@@ -3,11 +3,19 @@
     <van-button to="/page/lang">切换语言</van-button>
     <van-button :to="{ path: '/page/changeTheme' }">切换主题</van-button>
 
-    <van-button :to="{ path: '/page/asyncRouteExample' }">asyncRouteExample</van-button>
-    <van-button :to="{ path: '/page/asyncRouteExample1' }">asyncRouteExample1</van-button>
+    <van-button :to="{ path: '/page/asyncRouteExample' }"
+      >asyncRouteExample</van-button
+    >
+    <van-button :to="{ path: '/page/asyncRouteExample1' }"
+      >asyncRouteExample1</van-button
+    >
 
     <div @click="routerReplace()">显示自定义Toast</div>
-    <div class="test"><span>1</span><span>2</span></div>
+    <div class="test">
+      <span>1</span>
+
+      <span>2</span>
+    </div>
     <i class="icon icon-shoucang1"></i>
     <div :style="{ color: themeColor }">12333</div>
     <lineChart />
@@ -54,7 +62,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('~@/assets/css/custom.less');
+@import url("~@/assets/css/custom.less");
 .test {
   .display-column-center();
 }

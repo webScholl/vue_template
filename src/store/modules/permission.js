@@ -1,47 +1,39 @@
 // 动态权限路由
 import asyncRoutes from '@/router/asyncRoutes'
 import pageRoutes from '@/router/pageRoutes'
-export const SET_ROUTERS = 'SET_ROUTERS'
-export const GENERATE_ROUTES = 'GENERATE_ROUTES'
-export const SET_KEEPALIVELIST = 'SET_KEEPALIVELIST'
-export const RESETROUTER = 'RESETROUTER'
-export class KeepAliveStatus {
-  static layout = 1
-  static page = 2
-  static common = 3
-  static asyncPage = 4
-}
-// 是否开启权限控制
-const openAuthControll = true
+import { GET_PERMISSION, SET_ROUTES, SET_KEEPALIVELIST, RESETROUTER, GENERATE_ROUTES } from '../action-types'
+import {
+  getPermission
+} from '@/apis/login'
+import { KeepAliveType } from '@/enums'
 /**
  * 判断路由是否加载
- * @param menus
  * @param route
+ * @param menusPermission
  */
-function hasPermission(permissionResources, route) {
-  // debugger
-  if (route.meta && route.meta.auth && openAuthControll) {
+function hasPermission(route, menusPermission) {
+  if (route.meta && route.meta.auth) {
     // 权限控制
-    return permissionResources.some(role => route.meta.auth.includes(role))
+    return menusPermission.some(menuPer => menuPer.auth === route.meta.auth)
   } else {
     return true
   }
 }
 
 /**
- * 递归过滤异步路由表，返回符合员工角色权限的路由表
- * @param routes
- * @param roles
+ * 递归过滤异步路由表，返回符合权限的路由表
+ * @param asyncRoutes
+ * @param menusPermission
  */
 
-export function filterAsyncRouter(routes, roles) {
+export function filterAsyncRoute(asyncRoutes, menusPermission) {
   const res = []
 
-  routes.forEach(route => {
+  asyncRoutes.forEach(route => {
     const tmp = { ...route }
-    if (hasPermission(roles, tmp)) {
+    if (hasPermission(tmp, menusPermission)) {
       if (tmp.children) {
-        tmp.children = filterAsyncRouter(tmp.children, roles)
+        tmp.children = filterAsyncRoute(tmp.children, menusPermission)
       }
       res.push(tmp)
     }
@@ -53,49 +45,71 @@ export function filterAsyncRouter(routes, roles) {
 const permission = {
   // namespaced: true,
   state: {
-    routers: pageRoutes, // 所有页面管理
-    addRouters: [], // 动态路由级
+    hasGetPermission: false, // 权限状态
+    menusPermission: [], // 菜单权限
+    buttonsPermission: [], // 按钮权限
+    routes: pageRoutes, // 所有页面管理
+    dynamicRoutes: [], // 动态级路由
     keepAliveLayoutList: [], // layout页keepAlive
     keepAlivePageList: [], // page页keepAlive
     keepAliveCommonList: [], // 公共页keepAlive
-    keepAliveAsyncRouteList: [] // 动态路由
+    keepAliveAsyncRouteList: [] // 动态页keepAlive
   },
   mutations: {
-    // 设置路由
-    [SET_ROUTERS]: (state, routers) => {
-      state.addRouters = routers
-      state.routers = pageRoutes.concat(routers)
+    [GET_PERMISSION]: (store, payload) => {
+      store.hasGetPermission = true
+      store.menusPermission = payload.menusPermission
+      store.buttonsPermission = payload.buttonsPermission
     },
-    // 设置动态路由
+    [SET_ROUTES]: (state, routes) => {
+      state.dynamicRoutes = routes
+      state.routes = pageRoutes.concat(routes)
+    },
     [SET_KEEPALIVELIST]: (state, routeObj) => {
       switch (routeObj.type) {
-        case 1:
+        case KeepAliveType.layout:
           state.keepAliveLayoutList = routeObj.routes
           break
-        case 2:
+        case KeepAliveType.page:
           state.keepAlivePageList = routeObj.routes
           break
-        case 3:
+        case KeepAliveType.common:
           state.keepAliveCommonList = routeObj.routes
           break
-        case 4:
+        case KeepAliveType.asyncPage:
           state.keepAliveAsyncRouteList = routeObj.routes
           break
       }
     },
     [RESETROUTER]: (state) => {
-      state.addRouters = []
-      state.routers = []
+      state.dynamicRoutes = []
+      state.routes = []
     }
   },
   actions: {
-    [GENERATE_ROUTES]({
+    [GET_PERMISSION]: ({
       commit
-    }, permissionResources) {
+    }) => {
+      return new Promise((resolve, reject) => {
+        getPermission().then(
+          res => {
+            commit(GET_PERMISSION, res)
+            resolve()
+          },
+          err => {
+            reject(err)
+          }
+        )
+      })
+    },
+    [GENERATE_ROUTES]({
+      commit,
+      state
+    }) {
       return new Promise(resolve => {
-        const accessedRouter = filterAsyncRouter(asyncRoutes, permissionResources)
-        commit(SET_ROUTERS, accessedRouter)
-        resolve(accessedRouter)
+        const dynamicRoutes = filterAsyncRoute(asyncRoutes, state.menusPermission)
+        commit(SET_ROUTES, dynamicRoutes)
+        resolve(dynamicRoutes)
       })
     },
     [SET_KEEPALIVELIST]: ({

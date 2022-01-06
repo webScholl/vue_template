@@ -22,7 +22,7 @@ export default {
     [types.SET_THEME]: (state, payload) => {
       state.theme = payload.theme
     },
-    [types.SET_CANCEL_TOKENS](state, payload) {
+    [types.SET_CANCELTOKENS](state, payload) {
       if (payload === 'clear') {
         state.cancelTokens = []
       } else {

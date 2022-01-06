@@ -23,8 +23,6 @@
     </section>
     <footer>
       <van-button type="primary" @click="onSubmit">登录</van-button>
-      <router-link :to="{ path: '/' }">忘记密码</router-link>
-      <router-link :to="{ path: '/page/jtRegister' }">注册</router-link>
     </footer>
   </div>
 </template>
@@ -42,11 +40,11 @@ export default {
     }
   },
   methods: {
-    onSubmit(val) {
+    onSubmit() {
       this.$store
         .dispatch(LOGIN, {
-          phone: escape(this.phone),
-          password: escape(this.password)
+          phone: this.phone,
+          password: this.password
         })
         .then((res) => {
           const backPath = this.$route.query.redirect || '/layout/home'

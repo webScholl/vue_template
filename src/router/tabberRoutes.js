@@ -5,8 +5,9 @@ export default [
   {
     path: '/layout',
     meta: {
-      title: 'index'
-      // keepAlive: true
+      title: 'index',
+      // keepAlive: true,
+      needLogin: true
     },
     redirect: '/layout/index',
     // beforeEnter: (to, from, next) => {
@@ -22,7 +23,8 @@ export default [
         name: 'buy',
         meta: {
           title: 'buy',
-          keepAlive: true
+          keepAlive: true,
+          needLogin: true
         },
         component: () => import(/* webpackChunkName: "buy" */ '../views/buy/buy.vue')
       },
@@ -31,7 +33,8 @@ export default [
         name: 'star',
         meta: {
           title: 'star',
-          keepAlive: true
+          keepAlive: true,
+          needLogin: true
         },
         component: () => import(/* webpackChunkName: "star" */ '../views/star/star.vue')
       },
@@ -40,7 +43,8 @@ export default [
         name: 'user',
         meta: {
           title: '个人中心',
-          keepAlive: true
+          keepAlive: true,
+          needLogin: true
         },
         component: () => import(/* webpackChunkName: "user" */ '../views/user/user.vue')
       },
@@ -49,7 +53,8 @@ export default [
         name: 'home',
         meta: {
           title: '首页',
-          keepAlive: true
+          keepAlive: true,
+          needLogin: true
         },
         component: Home
       }

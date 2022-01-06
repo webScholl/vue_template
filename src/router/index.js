@@ -3,9 +3,13 @@ import VueRouter from 'vue-router'
 import tabberRoutes from './tabberRoutes'
 import pageRoutes from './pageRoutes'
 import store from '@/store'
-import { SET_KEEPALIVELIST, KeepAliveStatus } from '@/store/modules/permission'
-import config from '~/app.config'
+import { SET_KEEPALIVELIST } from '@/store/action-types'
+import { KeepAliveType } from '@/enums'
+import { setTitle } from '@/utils/appUtils'
+import { isNprogress } from '~/app.config'
 import hooks from './hooks'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 // 复写warn方法方便检查由于使用name跳转无法监控404的问题
 const sourceWarn = window.console.warn
@@ -55,14 +59,12 @@ const routes404 = [
     redirect: '/404'
   }
 ]
-let routes = [
+const routes = [
   ...commonRoutes,
   ...tabberRoutes,
-  ...pageRoutes
+  ...pageRoutes,
+  ...routes404
 ]
-if (!config.isOpenAsyncRoutes) {
-  routes = routes.concat(routes404)
-}
 // 收集keepAlive 路由
 export function getKeepAliveRouterGenerator(Routes, keepAliveRoutes = []) {
   Routes.forEach(Route => {
@@ -77,9 +79,9 @@ export function getKeepAliveRouterGenerator(Routes, keepAliveRoutes = []) {
   })
   return keepAliveRoutes
 }
-store.dispatch(SET_KEEPALIVELIST, { routes: getKeepAliveRouterGenerator(pageRoutes), type: KeepAliveStatus.page })
-store.dispatch(SET_KEEPALIVELIST, { routes: getKeepAliveRouterGenerator(tabberRoutes), type: KeepAliveStatus.layout })
-store.dispatch(SET_KEEPALIVELIST, { routes: getKeepAliveRouterGenerator(commonRoutes), type: KeepAliveStatus.common })
+store.dispatch(SET_KEEPALIVELIST, { routes: getKeepAliveRouterGenerator(pageRoutes), type: KeepAliveType.page })
+store.dispatch(SET_KEEPALIVELIST, { routes: getKeepAliveRouterGenerator(tabberRoutes), type: KeepAliveType.layout })
+store.dispatch(SET_KEEPALIVELIST, { routes: getKeepAliveRouterGenerator(commonRoutes), type: KeepAliveType.common })
 
 const createRouter = () => new VueRouter({
   mode: 'hash', // history,hash 模式  hash模式兼容性高
@@ -96,7 +98,11 @@ export function resetRouter() {
   router.matcher = newRouter.matcher
 }
 
-Object.keys(hooks).forEach(hook => {
-  router.beforeEach(hooks[hook].bind(router))
+Object.entries(hooks).forEach(([key, hook]) => {
+  router.beforeEach(hook.bind(router))
+})
+router.afterEach((to) => {
+  setTitle(to)
+  if (isNprogress) NProgress.done()
 })
 export default router
