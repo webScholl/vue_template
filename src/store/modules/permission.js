@@ -82,8 +82,8 @@ const permission = {
       }
     },
     [RESETROUTER]: (state) => {
-      state.dynamicRoutes = []
       state.routes = []
+      state.dynamicRoutes = []
     }
   },
   actions: {
