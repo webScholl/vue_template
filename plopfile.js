@@ -177,7 +177,7 @@ module.exports = plop => {
       {
         type: 'append',
         pattern: VIEW_LAYOUT_ROUTER,
-        path: 'src/router/tabberRoutes.js',
+        path: 'src/router/layoutRoutes.js',
         templateFile: 'plop-templates/view/layout-route-register.hbs'
       }
       ])

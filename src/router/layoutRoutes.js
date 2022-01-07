@@ -19,6 +19,16 @@ export default [
       // 魔法注释勿删 ⬇️
       /** plop view layout router **/
       {
+        path: 'home',
+        name: 'home',
+        meta: {
+          title: '首页',
+          keepAlive: true,
+          needLogin: true
+        },
+        component: Home
+      },
+      {
         path: 'buy',
         name: 'buy',
         meta: {
@@ -47,17 +57,8 @@ export default [
           needLogin: true
         },
         component: () => import(/* webpackChunkName: "user" */ '../views/user/user.vue')
-      },
-      {
-        path: 'home',
-        name: 'home',
-        meta: {
-          title: '首页',
-          keepAlive: true,
-          needLogin: true
-        },
-        component: Home
       }
+
     ]
   }
 ]

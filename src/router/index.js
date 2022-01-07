@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import tabberRoutes from './tabberRoutes'
+import layoutRoutes from './layoutRoutes'
 import pageRoutes from './pageRoutes'
 import store from '@/store'
 import { SET_KEEPALIVELIST } from '@/store/action-types'
@@ -61,7 +61,7 @@ const routes404 = [
 ]
 const routes = [
   ...commonRoutes,
-  ...tabberRoutes,
+  ...layoutRoutes,
   ...pageRoutes,
   ...routes404
 ]
@@ -79,9 +79,9 @@ export function getKeepAliveRouterGenerator(Routes, keepAliveRoutes = []) {
   })
   return keepAliveRoutes
 }
-store.dispatch(SET_KEEPALIVELIST, { routes: getKeepAliveRouterGenerator(pageRoutes), type: KeepAliveType.page })
-store.dispatch(SET_KEEPALIVELIST, { routes: getKeepAliveRouterGenerator(tabberRoutes), type: KeepAliveType.layout })
 store.dispatch(SET_KEEPALIVELIST, { routes: getKeepAliveRouterGenerator(commonRoutes), type: KeepAliveType.common })
+store.dispatch(SET_KEEPALIVELIST, { routes: getKeepAliveRouterGenerator(layoutRoutes), type: KeepAliveType.layout })
+store.dispatch(SET_KEEPALIVELIST, { routes: getKeepAliveRouterGenerator(pageRoutes), type: KeepAliveType.page })
 
 const createRouter = () => new VueRouter({
   mode: 'hash', // history,hash 模式  hash模式兼容性高

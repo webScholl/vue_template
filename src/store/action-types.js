@@ -14,6 +14,5 @@ export const SET_USERINFO = 'SET_USERINFO' // 用户信息
 // permission
 export const GET_PERMISSION = 'GET_PERMISSION' // 获取权限
 export const GENERATE_ROUTES = 'GENERATE_ROUTES' // 生成动态路由
-export const SET_ROUTES = 'SET_ROUTES' // 设置路由管理
 export const SET_KEEPALIVELIST = 'SET_KEEPALIVELIST' // 存储KeepAlive
 export const RESETROUTER = 'RESETROUTER' // 重置路由

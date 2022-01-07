@@ -1,7 +1,7 @@
 import store from '@/store'
 import { SET_CANCELTOKENS, GET_PERMISSION, GENERATE_ROUTES, SET_KEEPALIVELIST, LOGOUT } from '@/store/action-types'
 import { KeepAliveType } from '@/enums'
-import router, { getKeepAliveRouterGenerator } from '@/router'
+import { getKeepAliveRouterGenerator } from '@/router'
 import { Toast } from 'vant'
 import { isNprogress } from '~/app.config'
 import NProgress from 'nprogress'

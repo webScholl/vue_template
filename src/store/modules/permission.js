@@ -1,7 +1,7 @@
 // 动态权限路由
 import asyncRoutes from '@/router/asyncRoutes'
 import pageRoutes from '@/router/pageRoutes'
-import { GET_PERMISSION, SET_ROUTES, SET_KEEPALIVELIST, RESETROUTER, GENERATE_ROUTES } from '../action-types'
+import { GET_PERMISSION, GENERATE_ROUTES, SET_KEEPALIVELIST, RESETROUTER } from '../action-types'
 import {
   getPermission
 } from '@/apis/login'
@@ -61,7 +61,7 @@ const permission = {
       store.menusPermission = payload.menusPermission
       store.buttonsPermission = payload.buttonsPermission
     },
-    [SET_ROUTES]: (state, routes) => {
+    [GENERATE_ROUTES]: (state, routes) => {
       state.dynamicRoutes = routes
       state.routes = pageRoutes.concat(routes)
     },
@@ -108,7 +108,7 @@ const permission = {
     }) {
       return new Promise(resolve => {
         const dynamicRoutes = filterAsyncRoute(asyncRoutes, state.menusPermission)
-        commit(SET_ROUTES, dynamicRoutes)
+        commit(GENERATE_ROUTES, dynamicRoutes)
         resolve(dynamicRoutes)
       })
     },
