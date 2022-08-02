@@ -1,7 +1,7 @@
 /**
 @params app 全局工具
 */
-import { getHtmlDom, setAttr } from '@/utils/domUtils'
+import { getHtmlDom, setAttr } from './domUtils'
 /**
 @return true为pc false为 phone
 */
