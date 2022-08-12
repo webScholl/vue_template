@@ -6,6 +6,7 @@
     <section>
       <van-cell-group inset>
         <van-field
+          v-emoji
           label-class="label_width"
           v-model="phone"
           label="用户名"
@@ -33,14 +34,14 @@ import commonMixin from '@/utils/mixin'
 export default {
   name: 'login',
   mixins: [commonMixin],
-  data() {
+  data () {
     return {
       phone: '',
       password: ''
     }
   },
   methods: {
-    onSubmit() {
+    onSubmit () {
       this.$store
         .dispatch(LOGIN, {
           phone: this.phone,

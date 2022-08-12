@@ -8,20 +8,18 @@
 export default {
   name: 'App',
   // 向下获取app
-  provide() {
+  provide () {
     return {
       root: this
     }
   },
-  data() {
+  data () {
     return {}
   },
 
   watch: {},
   computed: {},
-  mounted() {
-    console.log(1)
-  },
+  mounted () { },
   methods: {}
 }
 </script>

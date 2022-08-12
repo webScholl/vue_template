@@ -59,7 +59,27 @@ export const addChildNode = (id, childNode) => {
 export const removeChildNode = (id, childNode) => {
   return getElementDom(id).removeChild(childNode)
 }
+/**
+ * @description: 获取拥有某个属性的最近父元素
+ * @param {*} ele
+ * @param {*} style :{position:releative}
+ * @return {*} 符合条件的父元素
+ */
+export const getFatherNodeByStyle = (ele, style) => {
+  const key = Object.keys(style)[0]
+  const val = style[key]
 
+  let parent = ele.parentNode
+  while (parent) {
+    const parentStyles = getComputedStyle(parent)
+    if (parentStyles[key] === val) {
+      break
+    } else {
+      parent = parent.parentNode
+    }
+  }
+  return parent
+}
 export default {
   createElement,
   getElementDom,

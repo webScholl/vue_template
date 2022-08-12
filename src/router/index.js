@@ -55,7 +55,6 @@ const routes404 = [
   },
   {
     path: '*',
-    name: '404',
     redirect: '/404'
   }
 ]

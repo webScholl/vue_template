@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { i18n } from './i18n' // 多语言
+import Directives from './directives' // 自定义指令集
 import 'normalize.css/normalize' // github移动端通用初始化样式
 import 'lib-flexible' // 移动端适配
 import './echarts' // 按需加载echart
@@ -11,12 +12,14 @@ import './env' // 环境变量设置,也可以在vue-cli自定义的.env.*文件
 import './permission' // 全局路由守卫
 import './components/common' // 自动注册非项目全局组件
 import './components/project' // 自动注册全局项目组件
-import './vant'// 全局按需引入vant
+import './vant'
+// 全局按需引入vant
 import './theme/index' // 主题文件
-import './directives' // 自定义指令集
+
 import './filters' // 自定义过滤集
-import './webSocket' // 自定义ws连接器
+// import './webSocket' // 自定义ws连接器
 import './components/toast/index' // 自定义Toast
+Vue.use(Directives)
 if (process.env.NODE_ENV !== 'production') {
 // eslint-disable-next-line no-unused-expressions
   import('./mock') // mock 请求

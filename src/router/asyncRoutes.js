@@ -33,22 +33,6 @@ const asyncRoutes = [{
     }
 
   ]
-},
-{
-  path: '/404',
-  name: '404',
-  meta: {
-    title: '404',
-    keepAlive: true,
-    needLogin: true
-  },
-  component: () =>
-    import(/* webpackChunkName: "404" */ '../views/404/404.vue')
-},
-{
-  path: '*',
-  name: '404',
-  redirect: '/404'
 }
 ]
 export default asyncRoutes

@@ -9,7 +9,7 @@
     <van-button :to="{ path: '/page/asyncRouteExample1' }"
       >asyncRouteExample1</van-button
     >
-
+    <div v-drag>drag</div>
     <div @click="routerReplace()">显示自定义Toast</div>
     <div class="test">
       <span>1</span>
@@ -34,7 +34,7 @@ export default {
   name: 'home',
   inject: ['root'],
   mixins: [commonMixin],
-  data() {
+  data () {
     return {}
   },
   components: {
@@ -42,16 +42,16 @@ export default {
     calendar,
     lineChart
   },
-  mounted() {
+  mounted () {
     getAppVersion()
   },
-  onShow() {
+  onShow () {
     console.log(this, 'onShow')
   },
-  beforeDestroy() {},
-  deactivated() {},
+  beforeDestroy () { },
+  deactivated () { },
   methods: {
-    showToast() {
+    showToast () {
       this.$cqToast.success('成功')
       setTimeout(() => {
         this.$cqToast.clear()
