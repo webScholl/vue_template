@@ -3,13 +3,13 @@ import store from '@/store'
 import * as types from '../../store/action-types'
 import handelRetry from './handelRetry'
 class HttpRequest {
-  constructor() {
+  constructor () {
     this.baseURL = process.env.baseUrl
     this.timeout = 5000
     this.queue = {} // 记录请求队列 {/:true}
   }
 
-  setInterceptors(instance, url) {
+  setInterceptors (instance, url) {
     // 添加请求拦截器
     instance.interceptors.request.use(config => {
       // 在发送请求之前做些什么
@@ -43,7 +43,7 @@ class HttpRequest {
           break
       }
       return response
-    }, function(error) {
+    }, function (error) {
       // 对响应错误做点什么
       delete this.queue[url]
       if (!Object.keys(this.queue).length) {
@@ -53,21 +53,21 @@ class HttpRequest {
     })
   }
 
-  request(options) {
+  request (options) {
     const instance = axios.create()
     this.setInterceptors(instance, options.url)
     var config = { baseURL: this.baseURL, timeout: this.timeout, ...options }
     return instance(config)
   }
 
-  get(url, params) {
+  get (url, params) {
     return this.request({
       url,
       params
     })
   }
 
-  post(url, data) {
+  post (url, data) {
     return this.request({
       method: 'post',
       url,

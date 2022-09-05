@@ -9,11 +9,9 @@
     <van-button :to="{ path: '/page/asyncRouteExample1' }"
       >asyncRouteExample1</van-button
     >
-    <div v-drag>drag</div>
     <div @click="routerReplace()">显示自定义Toast</div>
     <div class="test">
       <span>1</span>
-
       <span>2</span>
     </div>
     <i class="icon icon-shoucang1"></i>
@@ -21,11 +19,11 @@
     <lineChart />
     <Test />
     <calendar />
+    <div v-scrollToTop="{ distance: 20 }">scrollToTop</div>
   </div>
 </template>
 
 <script>
-import { getAppVersion } from '@/apis'
 import commonMixin from '@/utils/mixin'
 import Test from 'Test'
 import lineChart from 'lineChart'
@@ -43,7 +41,6 @@ export default {
     lineChart
   },
   mounted () {
-    getAppVersion()
   },
   onShow () {
     console.log(this, 'onShow')

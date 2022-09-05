@@ -15,7 +15,7 @@ export default function(config) {
     store.dispatch(types.UPDATE_TOKEN).then(newToken => {
       // 使用新的token替换旧的token，并构造新的请求
       const requests = originRequest.map(callback => callback(newToken))
-      // 重新发送请求
+      // 判断是否都处理完成
       return httpRequest.all(requests)
     }).finally(() => {
       // 重置
